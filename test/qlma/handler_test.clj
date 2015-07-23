@@ -1,7 +1,7 @@
-(ns qlma-server.handler-test
+(ns qlma.handler-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [qlma-server.handler :refer :all]))
+            [qlma.handler :refer :all]))
 
 (deftest test-app
   (testing "main route"
