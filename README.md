@@ -1,2 +1,11 @@
 ![QLMA logo](https://raw.githubusercontent.com/qlma/media/master/qlma.png)
-Alustava pohja QLMA:lle.
+
+# Ennen kehittämistä
+
+1. Asenna Java, jos ei ole ennestään
+1. Asenna Leiningen - http://leiningen.org/
+1. Kloonaa Qlma:n palvelin
+1. Käynnistä palvelin
+    
+    lein ring server
+
