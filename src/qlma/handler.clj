@@ -2,7 +2,7 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [qlma.api.v1.index :as root]))
+            [qlma.api.root-handler :as root]))
 
 (defroutes app-routes
   (GET "/" [] (root/index))
