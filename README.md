@@ -1,6 +1,11 @@
 ![QLMA logo](https://raw.githubusercontent.com/qlma/media/master/qlma.png)
 
-# Ennen kehittämistä
+QLMA on oppilaitoksille tarkoitettu palvelu jonka tarkoitus on mullistaa oppilaitosten viestintintä. Lisätietoa sivustolta: https://storify.com/iiuusit/qlma-n-synty
+
+
+Tällä hetkellä projekti on kehityksen alla.
+
+# Kehittämään
 
 1. Asenna Java, jos ei ole ennestään
 1. Asenna Leiningen - http://leiningen.org/
