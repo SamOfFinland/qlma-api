@@ -6,6 +6,9 @@
 1. Asenna Leiningen - http://leiningen.org/
 1. Kloonaa Qlma:n palvelin
 1. Käynnistä palvelin
-    
-    lein ring server
+
+    ```bash
+    $ cd $PROJECT_ROOT
+    $ lein ring server
+    ```
 
