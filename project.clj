@@ -6,7 +6,8 @@
                  [compojure "1.3.1"]
                  [ring/ring-defaults "0.1.2"]
                  [korma "0.4.2"]
-                 [migratus "0.8.2"]]
+                 [migratus "0.8.2"]
+                 [mysql/mysql-connector-java "5.1.6"]]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler qlma.handler/app}
   :profiles
