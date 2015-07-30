@@ -8,7 +8,7 @@
                  [korma "0.4.2"]
                  [migratus "0.8.2"]
                  [mysql/mysql-connector-java "5.1.36"]
-                 [selmer "0.8.6"]]
+                 [selmer "0.8.7"]]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler qlma.handler/app}
   :profiles
