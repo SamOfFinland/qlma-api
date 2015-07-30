@@ -14,14 +14,19 @@
 
 ;; Funktio kopioitu
 ;; https://github.com/Opetushallitus/clojure-utils/blob/master/src/clj/oph/common/infra/asetukset.clj
-(defn pisteavaimet->puu [m]
+(defn dotkeys->tree-map [m]
   (reduce #(let [[k v] %2
                  path (map keyword (.split (name k) "\\."))]
              (assoc-in %1 path v))
           {}
           m))
 
-(def settings {:db {:host      "localhost"
-                     :user      "root"
-                     :password  ""
-                     :db        "qlma"}})
+(defn get-settings
+  [file]
+  (let [get-settings-from-file (dotkeys->tree-map (read-settings-from-file file))]
+    (if (empty? get-settings-from-file)
+      {:db {:host "localhost",
+             :user "root",
+             :password "",
+             :db "qlma"}}
+      (get-settings-from-file))))
