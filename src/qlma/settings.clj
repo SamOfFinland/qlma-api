@@ -22,11 +22,12 @@
           m))
 
 (defn get-settings
-  [file]
+  ([] (get-settings "app.properties"))
+  ([file]
   (let [get-settings-from-file (dotkeys->tree-map (read-settings-from-file file))]
     (if (empty? get-settings-from-file)
       {:db {:host "localhost",
              :user "root",
              :password "",
              :db "qlma"}}
-      (get-settings-from-file))))
+      (get-settings-from-file)))))

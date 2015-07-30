@@ -3,6 +3,6 @@
             [korma.core :as sql]
             [qlma.settings :as settings]))
 
-(defdb db (mysql (:db (settings/get-settings "app.properties"))))
+(defdb db (mysql (:db (settings/get-settings))))
 
 (sql/defentity messages)
