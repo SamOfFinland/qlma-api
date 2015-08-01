@@ -5,4 +5,5 @@
 
 (defdb db (mysql (:db (settings/get-settings))))
 
-(sql/defentity messages)
+(sql/defentity messages
+  (pk :id))
