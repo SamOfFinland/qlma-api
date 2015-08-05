@@ -3,7 +3,7 @@
 [![Dependencies Status](http://jarkeeper.com/qlma/server/status.png)](http://jarkeeper.com/qlma/server)
 ![QLMA logo](https://raw.githubusercontent.com/qlma/media/master/qlma.png)
 
-QLMA on oppilaitoksille tarkoitettu palvelu jonka tarkoitus on mullistaa oppilaitosten viestintintä. Lisätietoa sivustolta: https://storify.com/iiuusit/qlma-n-synty
+QLMA on oppilaitoksille tarkoitettu palvelu jonka tarkoitus on mullistaa oppilaitosten viestintä. Lisätietoa sivustolta: https://storify.com/iiuusit/qlma-n-synty
 
 
 Tällä hetkellä projekti on kehityksen alla.
