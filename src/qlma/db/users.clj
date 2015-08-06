@@ -9,7 +9,7 @@
 (defn create-user
   "Luodaan käyttäjä tauluun"
   [{:keys [username firstname lastname password]}]
-  (sql/insert users (sql/values {:username "jee"
-                                :firstname "jou"
-                                :lastname "moi"
-                                :password "tataa"})))
+  (sql/insert users (sql/values {:username username
+                                :firstname firstname
+                                :lastname lastname
+                                :password password})))
