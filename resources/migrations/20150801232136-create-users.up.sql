@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS `users` (
   `firstname` VARCHAR(45) NOT NULL COMMENT '',
   `lastname` VARCHAR(100) NOT NULL COMMENT '',
   `password` VARCHAR(250) NOT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '')
+  PRIMARY KEY (`id`, `username`)  COMMENT '')
 ENGINE = InnoDB;
