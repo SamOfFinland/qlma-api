@@ -27,7 +27,7 @@
   (let [get-settings-from-file (dotkeys->tree-map (read-settings-from-file file))]
     (if (empty? get-settings-from-file)
       {:db {:host "localhost",
-             :user "root",
+             :user (System/getenv "USER"),
              :password "",
              :db "qlma"}}
       (get-settings-from-file)))))

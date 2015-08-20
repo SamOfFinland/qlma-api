@@ -8,10 +8,10 @@
                  [ring/ring-defaults "0.1.5"]
                  [korma "0.4.2"]
                  [migratus "0.8.2"]
-                 [mysql/mysql-connector-java "5.1.36"]
                  [hiccup "1.0.5"]
                  [metosin/ring-swagger "0.20.4"]
                  [buddy/buddy-hashers "0.6.0"]
+                 [org.postgresql/postgresql "9.2-1002-jdbc4"]
                  ]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler qlma.handler/app}

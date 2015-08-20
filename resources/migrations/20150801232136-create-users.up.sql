@@ -1,8 +1,6 @@
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '',
-  `username` VARCHAR(45) NOT NULL COMMENT '',
-  `firstname` VARCHAR(45) NOT NULL COMMENT '',
-  `lastname` VARCHAR(100) NOT NULL COMMENT '',
-  `password` VARCHAR(250) NOT NULL COMMENT '',
-  PRIMARY KEY (`id`, `username`)  COMMENT '')
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS users (
+  id serial PRIMARY KEY,
+  username VARCHAR(45) NOT NULL,
+  firstname VARCHAR(45) NOT NULL,
+  lastname VARCHAR(100) NOT NULL,
+  password VARCHAR(250) NOT NULL)

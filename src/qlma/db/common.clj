@@ -3,7 +3,7 @@
             [korma.core :as sql]
             [qlma.settings :as settings]))
 
-(defdb db (mysql (:db (settings/get-settings))))
+(defdb db (postgres (:db (settings/get-settings))))
 
 (sql/defentity messages
   (sql/pk :id))

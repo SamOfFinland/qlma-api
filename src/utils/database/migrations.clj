@@ -7,8 +7,8 @@
             {:store                 :database
              :migration-dir         "migrations/"
              :migration-table-name  "migration"
-             :db {:classname        "com.mysql.jdbc.Driver"
-                  :subprotocol      "mysql"
+             :db {:classname        "com.postgresql.Driver"
+                  :subprotocol      "postgresql"
                   :subname          (str "//" (:host db-params) "/" (:db db-params))
                   :user             (:user db-params)
                   :password         (:password db-params)}}))
