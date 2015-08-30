@@ -21,7 +21,7 @@
 
 (defn username-and-password-ok?
   "Check that username and password match"
-  [username password]
-  (password/check password (get-user-password username)))
+  [{:keys [password username]}]
+  (password/check password (get-user-password username))
 
 
