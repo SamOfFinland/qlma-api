@@ -6,6 +6,5 @@
   (sql/select messages))
 
 (defn get-message [id]
-  "Hae viesti id:n perusteella"
   (sql/select messages
           (sql/where {:id id})))
