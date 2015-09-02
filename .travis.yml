@@ -4,6 +4,6 @@ jdk:
 addons:
       postgresql: "9.3"
 before_script:
-      - psql -c 'create role qlma with login password "" createdb;' -U postgres
-      - psql -c 'create database qlma;' -U postgres
+      - psql -c "create role qlma with login password '' createdb;" -U postgres
+      - psql -c "create database qlma;" -U postgres
 
