@@ -4,9 +4,6 @@ jdk:
 addons:
       postgresql: "9.3"
 before_script:
+      - psql -c 'create role qlma with login password "" createdb;' -U postgres
       - psql -c 'create database qlma;' -U postgres
-      - echo 'db.host="localhost"' >> app.properties
-      - echo 'db.user="postgres"' >> app.properties
-      - echo 'db.password=""' >> app.properties
-      - echo 'db.db="qlma"' >> app.properties
 
