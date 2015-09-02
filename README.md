@@ -2,6 +2,7 @@
 [![Stories in Ready](https://badge.waffle.io/qlma/server.png?label=ready&title=Ready)](https://waffle.io/qlma/server)
 [![Dependencies Status](http://jarkeeper.com/qlma/server/status.png)](http://jarkeeper.com/qlma/server)
 ![QLMA logo](https://raw.githubusercontent.com/qlma/media/master/qlma.png)
+![Build status](https://travis-ci.org/qlma/server.svg?branch=master)
 
 QLMA on oppilaitoksille tarkoitettu palvelu jonka tarkoitus on mullistaa oppilaitosten viestintä. Lisätietoa sivustolta: https://storify.com/iiuusit/qlma-n-synty
 
