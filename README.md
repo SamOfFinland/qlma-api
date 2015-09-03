@@ -21,3 +21,22 @@ Tällä hetkellä projekti on kehityksen alla.
     $ lein ring server
     ```
 
+Voit myös asentaa koneellesi Vagrant-ympäristön ja hyödyntää valmiiksi konfiguroitua virtuaalikonetta.
+
+1. Asenna Vagrant (https://www.vagrantup.com/)
+1. Kloonaa Qlma:n palvelin GitHubista
+1. Siirry komentokehoitteessa projektihakemistosi juureen ja käynnistä Vagrant-virtuaalikone (jälkimmäinen komento avaa SSH-terminaalin virtuaalikoneeseen)
+
+    ```bash
+    $ cd $PROJECT_ROOT
+    $ vagrant up && vagrant ssh
+    ```
+
+1. Siirry virtuaalikoneessa `/vagrant`-hakemistoon ja käynnistä palvelinprosessi
+
+    ```bash
+    $ cd /vagrant
+    $ lein ring server
+    ```
+
+1. Avaa nettiselaimeen osoite http://localhost:3000 ja varmista, että näet Hello World -sivun
