@@ -6,15 +6,22 @@
             [korma.core :as sql]
             ))
 
-(deftest db-users-test
-  (testing "create user"
-    (is (= (count (users/get-all-users)) 0)))
+(deftest test-add-user
+  (testing "Check if database is clean"
+    (is (= 0 (count (users/get-all-users)))))
 
-  (testing "add user"
-    (is (= (count (users/create-user {:username "woltage"
+  (testing "Add user to database"
+    (is (= 5 (count(users/create-user {:username "woltage"
                                       :password "jeejee"
                                       :lastname "iiro"
-                                      :firstname "matti"})) 5))))
+                                      :firstname "matti"})))))
+
+  (testing "Password and username match"
+    (is (= true (users/username-and-password-ok? {:username "woltage"
+                                                  :password "jeejee"}))))
+
+  (testing "Check user found from db"
+    (is (= 1 (count (users/get-all-users))))))
 
 (defn- clean-database []
   (sql/delete users))
