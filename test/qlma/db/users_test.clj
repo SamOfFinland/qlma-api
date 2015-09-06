@@ -24,6 +24,7 @@
     (is (= 1 (count (users/get-all-users))))))
 
 (defn- clean-database []
+  (sql/delete messages)
   (sql/delete users))
 
 (use-fixtures :once
