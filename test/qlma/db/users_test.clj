@@ -19,8 +19,8 @@
                                       :firstname "matti"})))))
 
   (testing "Password and username match"
-    (is (= true (users/username-and-password-ok? {:username "woltage"
-                                                  :password "jeejee"}))))
+    (is (= 4 (count (users/credential-check {:username "woltage"
+                                             :password "jeejee"})))))
 
   (testing "Check user found from db"
     (is (= 1 (count (users/get-all-users))))))

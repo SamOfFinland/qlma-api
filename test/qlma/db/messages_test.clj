@@ -40,6 +40,7 @@
     (is (= 1 (count (messages/get-all-messages))))))
 
 (defn- clean-database []
+  (delete-all-messages! db-spec)
   (delete-all-users! db-spec))
 
 (use-fixtures :once
