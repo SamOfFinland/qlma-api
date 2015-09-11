@@ -14,4 +14,8 @@ VALUES (:username, :firstname, :lastname, :password)
 
 -- name: select-user-password
 -- Get users password
-SELECT password FROM users WHERE username = :username
+SELECT * FROM users WHERE username = :username
+
+-- name: select-user-data
+-- Get user data
+SELECT * FROM users WHERE username = :username

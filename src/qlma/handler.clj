@@ -3,16 +3,24 @@
             [compojure.route :as route]
             [compojure.handler :as handler]
             [ring.middleware.json :as middleware]
-            [qlma.api.root-handler :as root]
+            [ring.util.response :refer [response]]
             [qlma.db.users :as user]
+            [cemerick.friend :as friend]
+            [cemerick.friend.workflows :as workflows]
             ))
 
 (defroutes app-routes
-  (GET "/" [] "Hello world")
-  (POST "/session" {body :body} (str (user/username-and-password-ok? body)))
+  (GET "/" [] (response "Qlma Api"))
+  (GET "/login" [] "Please login")
+  (GET "/secret" []
+    (friend/authenticated "Logged!"))
   (route/not-found "Not Found"))
 
 (def app
-  (-> (handler/site app-routes)
+  (-> (handler/site
+        (friend/authenticate app-routes {:login-uri "/login"
+                                         :default-landing-uri "/"
+                                         :credential-fn #(user/credential-check %)
+                                         :workflows [(workflows/interactive-form)]}))
       (middleware/wrap-json-body {:keywords? true})
       (middleware/wrap-json-response)))

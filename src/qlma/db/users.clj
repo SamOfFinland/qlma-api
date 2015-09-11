@@ -18,7 +18,11 @@
   [username]
   (-> (select-user-password db-spec username) first :password))
 
-(defn username-and-password-ok?
+(defn- get-user-data [username]
+  (dissoc (first (select-user-data db-spec username)) :password))
+
+(defn credential-check
   "Check that username and password match"
   [{:keys [password username]}]
-  (password/check password (get-user-password username)))
+  (if (password/check password (get-user-password username))
+    (get-user-data username)))
