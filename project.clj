@@ -5,10 +5,10 @@
   :dependencies [
                  [org.clojure/clojure "1.7.0"]
                  [compojure "1.4.0"]
-                 [yesql "0.5.0"]
-                 [migratus "0.8.4"]
+                 [yesql "0.4.2"]
+                 [migratus "0.8.2"]
                  [hiccup "1.0.5"]
-                 [metosin/ring-swagger "0.21.0"]
+                 [metosin/ring-swagger "0.20.4"]
                  [buddy/buddy-hashers "0.6.0"]
                  [org.postgresql/postgresql "9.2-1002-jdbc4"]
                  [com.cemerick/friend "0.2.1"]
