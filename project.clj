@@ -5,7 +5,7 @@
   :dependencies [
                  [org.clojure/clojure "1.7.0"]
                  [compojure "1.4.0"]
-                 [korma "0.4.2"]
+                 [yesql "0.4.2"]
                  [migratus "0.8.2"]
                  [hiccup "1.0.5"]
                  [metosin/ring-swagger "0.20.4"]
@@ -13,8 +13,12 @@
                  [org.postgresql/postgresql "9.2-1002-jdbc4"]
                  [com.cemerick/friend "0.2.1"]
                  [ring/ring-json "0.4.0"]
+                 [environ "1.0.1"]
                  ]
-  :plugins [[lein-ring "0.8.13"]]
+  :plugins [
+            [lein-ring "0.8.13"]
+            [lein-environ "1.0.1"]
+            ]
   :ring {:handler qlma.handler/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]

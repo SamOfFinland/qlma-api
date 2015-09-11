@@ -2,9 +2,11 @@
   (:require [clojure.test :refer :all]
             [qlma.db.users :as users]
             [utils.database.migrations :as mig]
-            [qlma.db.common :refer :all]
-            [korma.core :as sql]
+            [qlma.db.core :refer :all]
+            [yesql.core :refer [defqueries]]
             ))
+
+(defqueries "queries/tests.sql")
 
 (deftest test-add-user
   (testing "Check if database is clean"
@@ -24,8 +26,8 @@
     (is (= 1 (count (users/get-all-users))))))
 
 (defn- clean-database []
-  (sql/delete messages)
-  (sql/delete users))
+  (delete-all-messages! db-spec)
+  (delete-all-users! db-spec))
 
 (use-fixtures :once
               (fn [f]

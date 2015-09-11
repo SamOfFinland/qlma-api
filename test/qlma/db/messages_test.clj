@@ -3,9 +3,11 @@
             [qlma.db.messages :as messages]
             [qlma.db.users :as users]
             [utils.database.migrations :as mig]
-            [qlma.db.common :refer :all]
-            [korma.core :as sql]
+            [qlma.db.core :refer :all]
+            [yesql.core :refer [defqueries]]
             ))
+
+(defqueries "queries/tests.sql")
 
 (def first-user-id
   (atom 0))
@@ -38,7 +40,7 @@
     (is (= 1 (count (messages/get-all-messages))))))
 
 (defn- clean-database []
-  (sql/delete messages))
+  (delete-all-users! db-spec))
 
 (use-fixtures :once
               (fn [f]
