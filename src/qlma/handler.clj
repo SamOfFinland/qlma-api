@@ -26,15 +26,15 @@
                               user-data)
             token (jws/sign session-data secret {:alg :hs512})]
         {:status 200
-          :body token})
+          :body {:token token}})
       {:status 400
-        :body "Permssion denied"})))
+        :body {:message "Permission denied"}})))
 
 (defn secret-page [request]
   (if-not (authenticated? request)
     (throw-unauthorized)
     {:status 200
-     :body (str "Logged in " (:identity request))}))
+     :body (merge {:message "LOGGED IN!"} (:identity request))}))
 
 
 (defroutes app-routes
@@ -49,5 +49,5 @@
   (-> (handler/site app-routes)
       (wrap-authorization auth-backend)
       (wrap-authentication auth-backend)
-      (middleware/wrap-json-body {:keywords? true})
-      (middleware/wrap-json-response)))
+      (middleware/wrap-json-response)
+      (middleware/wrap-json-body {:keywords? true})))
