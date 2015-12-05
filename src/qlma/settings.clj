@@ -29,5 +29,6 @@
       {:classname "org.postgresql.Driver",
        :subprotocol "postgresql",
        :subname "//localhost:5432/qlma",
-       :user "qlma"}
+       :user "qlma"
+       :secret-key "NOT IN PRODUCTION!"}
       (get-settings-from-file)))))

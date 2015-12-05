@@ -21,8 +21,15 @@
 (defn- get-user-data [username]
   (dissoc (first (select-user-data db-spec username)) :password))
 
-(defn credential-check
+(defn get-my-user-data
+  [{:keys [password username]}]
+  (if (password/check password (get-user-password username))
+    (select-keys (get-user-data username) [:firstname
+                                           :lastname])))
+(defn valid-user?
   "Check that username and password match"
   [{:keys [password username]}]
   (if (password/check password (get-user-password username))
-    (get-user-data username)))
+    true
+    false))
+
