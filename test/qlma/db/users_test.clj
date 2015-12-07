@@ -19,7 +19,7 @@
                                       :firstname "matti"})))))
 
   (testing "Password and username match"
-    (is (= 2 (count (users/get-my-user-data {:username "woltage"
+    (is (= 3 (count (users/get-my-user-data {:username "woltage"
                                              :password "jeejee"})))))
 
   (testing "Check user found from db"
