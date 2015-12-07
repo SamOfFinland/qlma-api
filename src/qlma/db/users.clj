@@ -25,7 +25,8 @@
   [{:keys [password username]}]
   (if (password/check password (get-user-password username))
     (select-keys (get-user-data username) [:firstname
-                                           :lastname])))
+                                           :lastname
+                                           :id])))
 (defn valid-user?
   "Check that username and password match"
   [{:keys [password username]}]

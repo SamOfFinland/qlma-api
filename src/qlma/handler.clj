@@ -6,6 +6,7 @@
             [buddy.sign.jws :as jws]
             [ring.util.response :refer [response]]
             [qlma.db.users :as user]
+            [qlma.db.messages :as messages]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [clj-time.core :as time]
             [buddy.auth.backends.token :refer [jws-backend]]
@@ -22,25 +23,26 @@
       (let [user-data (user/get-my-user-data {:password password
                                               :username username})
             session-data (merge {:username (keyword username)
-                        :exp (time/plus (time/now) (time/seconds 3600))}
-                              user-data)
+                                 :exp (time/plus (time/now) (time/seconds 3600))}
+                                user-data)
             token (jws/sign session-data secret {:alg :hs512})]
         {:status 200
-          :body {:token token}})
+         :body {:token token}})
       {:status 400
-        :body {:message "Permission denied"}})))
+       :body {:message "Permission denied"}})))
 
-(defn secret-page [request]
+(defn authorized-page [request message]
   (if-not (authenticated? request)
     (throw-unauthorized)
     {:status 200
-     :body (merge {:message "LOGGED IN!"} (:identity request))}))
+     :body message}))
 
 
 (defroutes app-routes
   (GET "/" [] (response "Qlma Api"))
   (POST "/login" [] login)
-  (GET "/secret" [] secret-page)
+  (context "/messages" []
+    (GET "/" request (authorized-page request {:messages (messages/get-messages-to-user (-> request :identity :id))})))
   (route/not-found "Not Found"))
 
 (def auth-backend (jws-backend {:secret secret :options {:alg :hs512}}))
