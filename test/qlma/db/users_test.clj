@@ -13,7 +13,7 @@
     (is (= 0 (count (users/get-all-users)))))
 
   (testing "Add user to database"
-    (is (= 5 (count(users/create-user {:username "woltage"
+    (is (= 7 (count(users/create-user {:username "woltage"
                                       :password "jeejee"
                                       :lastname "iiro"
                                       :firstname "matti"})))))

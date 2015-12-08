@@ -31,7 +31,7 @@
                                        :lastname "Mattila"})))))
 
   (testing "Add message from first user to second user"
-    (is (= 4 (count (messages/send-message @first-user-id @second-user-id "Hello world")))))
+    (is (= 6 (count (messages/send-message @first-user-id @second-user-id "Hello world")))))
 
   (testing "Check if user has message"
     (is (= 1 (count (messages/get-messages-to-user @second-user-id)))))
