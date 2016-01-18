@@ -4,8 +4,7 @@
             [qlma.db.users :as users]
             [utils.database.migrations :as mig]
             [qlma.db.core :refer :all]
-            [yesql.core :refer [defqueries]]
-            ))
+            [yesql.core :refer [defqueries]]))
 
 (defqueries "queries/tests.sql")
 
@@ -21,14 +20,14 @@
 
   (testing "Add users"
     (is (reset! first-user-id (:id (users/create-user {:username "matti"
-                                       :password "matti1"
-                                       :firstname "Matti"
-                                       :lastname "Mattila"}))))
+                                                       :password "matti1"
+                                                       :firstname "Matti"
+                                                       :lastname "Mattila"}))))
 
     (is (reset! second-user-id (:id (users/create-user {:username "matti2"
-                                       :password "matti2"
-                                       :firstname "Matti"
-                                       :lastname "Mattila"})))))
+                                                        :password "matti2"
+                                                        :firstname "Matti"
+                                                        :lastname "Mattila"})))))
 
   (testing "Add message from first user to second user"
     (is (= 6 (count (messages/send-message @first-user-id @second-user-id "Hello world")))))
@@ -44,8 +43,8 @@
   (delete-all-users! db-spec))
 
 (use-fixtures :once
-              (fn [f]
-                (mig/migrate)
-                (clean-database)
-                (f)))
+  (fn [f]
+    (mig/migrate)
+    (clean-database)
+    (f)))
 

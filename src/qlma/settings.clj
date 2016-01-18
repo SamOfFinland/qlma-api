@@ -24,11 +24,11 @@
 (defn get-settings
   ([] (get-settings "app.properties"))
   ([file]
-  (let [get-settings-from-file (dotkeys->tree-map (read-settings-from-file file))]
-    (if (empty? get-settings-from-file)
-      {:classname "org.postgresql.Driver",
-       :subprotocol "postgresql",
-       :subname "//localhost:5432/qlma",
-       :user "qlma"
-       :secret-key "NOT IN PRODUCTION!"}
-      (get-settings-from-file)))))
+   (let [get-settings-from-file (dotkeys->tree-map (read-settings-from-file file))]
+     (if (empty? get-settings-from-file)
+       {:classname "org.postgresql.Driver",
+        :subprotocol "postgresql",
+        :subname "//localhost:5432/qlma",
+        :user "qlma"
+        :secret-key "NOT IN PRODUCTION!"}
+       (get-settings-from-file)))))

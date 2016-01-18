@@ -37,12 +37,18 @@
     {:status 200
      :body message}))
 
-
 (defroutes app-routes
   (GET "/" [] (response "Qlma Api"))
   (POST "/login" [] login)
   (context "/messages" []
-    (GET "/" request (authorized-page request {:messages (messages/get-messages-to-user (-> request :identity :id))})))
+    (GET "/" request
+      (let [id (-> request :identity :id)]
+        (authorized-page request {:messages (messages/get-messages-to-user id)})))
+    (POST "/" request
+      (let [id (-> request :identity :id)
+            to (get-in request [:body :to])
+            message (get-in request [:body :message])]
+        (authorized-page request {:messages (messages/send-message id to message)}))))
   (route/not-found "Not Found"))
 
 (def auth-backend (jws-backend {:secret secret :options {:alg :hs512}}))
