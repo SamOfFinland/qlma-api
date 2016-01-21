@@ -4,7 +4,7 @@ SELECT * FROM messages
 
 -- name: select-message-with-id
 -- Select message with id
-SELECT * FROM messages WHERE id = :id
+SELECT * FROM messages WHERE id = :id AND to_user_id = :to_user_id
 
 -- name: select-messages-to-user
 -- Select messages to user

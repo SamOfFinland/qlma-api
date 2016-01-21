@@ -7,8 +7,8 @@
 (defn get-all-messages []
   (select-all-messages db-spec))
 
-(defn get-message [id]
-  (select-message-with-id db-spec id))
+(defn get-message [id my-id]
+  (select-message-with-id db-spec id my-id))
 
 (defn get-messages-to-user [user_id]
   (select-messages-to-user db-spec user_id))

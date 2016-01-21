@@ -13,11 +13,10 @@
                  [org.postgresql/postgresql "9.2-1002-jdbc4"]
                  [ring/ring-json "0.4.0"]
                  [environ "1.0.1"]
-                 ]
+                 [ring/ring-defaults "0.1.5"]]
   :plugins [
             [lein-ring "0.8.13"]
-            [lein-environ "1.0.1"]
-            ]
+            [lein-environ "1.0.1"]]
   :ring {:handler qlma.handler/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]

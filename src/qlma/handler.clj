@@ -1,10 +1,10 @@
 (ns qlma.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [compojure.handler :as handler]
+            [ring.middleware.defaults :refer :all]
             [ring.middleware.json :as middleware]
             [buddy.sign.jws :as jws]
-            [ring.util.response :refer [response]]
+            [ring.util.response :as resp]
             [qlma.db.users :as user]
             [qlma.db.messages :as messages]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
@@ -34,28 +34,33 @@
 (defn authorized-page [request message]
   (if-not (authenticated? request)
     (throw-unauthorized)
-    {:status 200
-     :body message}))
+    (resp/response message)))
 
 (defroutes app-routes
-  (GET "/" [] (response "Qlma Api"))
+  (GET "/" [] (resp/content-type (resp/response "Qlma Api") "text/html"))
   (POST "/login" [] login)
   (context "/messages" []
     (GET "/" request
-      (let [id (-> request :identity :id)]
-        (authorized-page request {:messages (messages/get-messages-to-user id)})))
+      (let [my-id (-> request :identity :id)]
+        (authorized-page request {:messages (messages/get-messages-to-user my-id)})))
     (POST "/" request
       (let [id (-> request :identity :id)
             to (get-in request [:body :to])
             message (get-in request [:body :message])]
-        (authorized-page request {:messages (messages/send-message id to message)}))))
+        (authorized-page request {:messages (messages/send-message id to message)})))
+    (context "/:id" [id]
+      (GET "/" request
+        (let [my-id (-> request :identity :id)]
+          (authorized-page request {:message (messages/get-message (read-string id) my-id)})))))
+  (route/resources "/")
   (route/not-found "Not Found"))
 
 (def auth-backend (jws-backend {:secret secret :options {:alg :hs512}}))
 
 (def app
-  (-> (handler/site app-routes)
+  (->
+      (wrap-defaults app-routes api-defaults)
       (wrap-authorization auth-backend)
       (wrap-authentication auth-backend)
-      (middleware/wrap-json-response)
-      (middleware/wrap-json-body {:keywords? true})))
+      (middleware/wrap-json-body {:keywords? true})
+      (middleware/wrap-json-response)))
