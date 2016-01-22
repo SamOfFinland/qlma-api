@@ -38,7 +38,7 @@
     (resp/response message)))
 
 (defroutes app-routes
-  (GET "/" [] (resp/content-type (resp/response "Qlma Api") "text/html"))
+  (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
   (POST "/login" [] login)
   (context "/messages" []
     (GET "/" request
