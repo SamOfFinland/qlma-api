@@ -11,7 +11,8 @@
             [clj-time.core :as time]
             [buddy.auth.backends.token :refer [jws-backend]]
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
-            [qlma.settings :as settings]))
+            [qlma.settings :as settings]
+            [ring.middleware.cors :refer [wrap-cors]]))
 
 (def secret (:secret-key (settings/get-settings)))
 
@@ -44,10 +45,10 @@
       (let [my-id (-> request :identity :id)]
         (authorized-page request {:messages (messages/get-messages-to-user my-id)})))
     (POST "/" request
-      (let [id (-> request :identity :id)
+      (let [my-id (-> request :identity :id)
             to (get-in request [:body :to])
             message (get-in request [:body :message])]
-        (authorized-page request {:messages (messages/send-message id to message)})))
+        (authorized-page request {:messages (messages/send-message my-id to message)})))
     (context "/:id" [id]
       (GET "/" request
         (let [my-id (-> request :identity :id)]
@@ -59,8 +60,10 @@
 
 (def app
   (->
-      (wrap-defaults app-routes api-defaults)
+      app-routes
+      (wrap-defaults api-defaults)
       (wrap-authorization auth-backend)
       (wrap-authentication auth-backend)
+      (wrap-cors :access-control-allow-origin #".*")
       (middleware/wrap-json-body {:keywords? true})
       (middleware/wrap-json-response)))
