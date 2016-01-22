@@ -58,20 +58,11 @@
 
 (def auth-backend (jws-backend {:secret secret :options {:alg :hs512}}))
 
-(defn allow-cors
-  [handler]
-  (fn [request]
-    (let [response (handler request)]
-      (assoc-in response [:headers "Access-Control-Allow-Origin"]
-                "*"))))
-
-
 (def app
   (->
       app-routes
       (wrap-defaults api-defaults)
       (wrap-authorization auth-backend)
       (wrap-authentication auth-backend)
-      (allow-cors)
       (middleware/wrap-json-body {:keywords? true})
       (middleware/wrap-json-response)))
