@@ -58,7 +58,7 @@
 
 (def auth-backend (jws-backend {:secret secret :options {:alg :hs512}}))
 
-(defn alllow-cors
+(defn allow-cors
   [handler]
   (fn [request]
     (let [response (handler request)]
