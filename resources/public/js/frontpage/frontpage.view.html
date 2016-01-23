@@ -1,71 +1,6 @@
-<div class="full color1 topslide">
-    <div class="logo">
-        <img src="img/qlma.png" height="55px">
-    </div>
-    <div class="date visible-lg">Tänään on torstai 20.9.2015
-    </div>
-    <div class="name text-right">
-        <a href="#menu-toggle" class="visible-xs" id="menu-toggle"><i class="fa fa-bars"></i></a>
-        <span class="visible-lg">
-            {{frontpage.user.firstname}} {{frontpage.user.lastname}}
-            <a href="#">Omat tiedot</a> &nbsp;  | &nbsp;
-            <a href="#" ng-click="frontpage.doLogout()" class="click">Kirjaudu ulos</a>
-        </span>
-    </div>
-</div>
+<ng-include src="'../../view/_topstatus.html'"></ng-include>
 <div id="wrapper">
-	<div id="sidebar-wrapper">
-	    <ul class="sidebar-nav">
-	        <li>
-	            <a href="frontpage.html">
-	                <i class="fa fa-home"></i>
-	                <div>ETUSIVU</div>
-	            </a>
-	        </li>
-	        <li>
-	            <a href="messages.html">
-	                <i class="fa fa-envelope-o"></i>
-	                <div>VIESTIT</div>
-	            </a>
-	        </li>
-	        <li>
-	            <a href="events.html">
-	                <i class="fa fa-calendar"></i>
-	                <div>TAPAHTUMAT</div>
-	            </a>
-	        </li>
-	        <li>
-	            <a href="timetable.html">
-	                <i class="fa fa-list-alt"></i>
-	                <div>LUKUJÄRJESTYS</div>
-	            </a>
-	        </li>
-	        <li>
-	            <a href="groups.html">
-	                <i class="fa fa-users"></i>
-	                <div>RYHMÄT</div>
-	            </a>
-	        </li>
-	        <li>
-	            <a href="help.html">
-	                <i class="fa fa-info-circle"></i>
-	                <div>APUA</div>
-	            </a>
-	        </li>
-	        <li class="visible-xs visible-xs visible-sm visible-md">
-	            <hr>
-	        </li>
-	        <li class="visible-xs visible-xs visible-sm visible-md">
-	            <br>
-	            <i class="fa fa-cog"></i>
-	            <a href="account.html">OMAT TIEDOT</a>
-	        </li>
-	        <li class="visible-xs visible-xs visible-sm visible-md">
-	            <i class="fa fa-key"></i>
-	            <a href="/client/">KIRJAUDU ULOS</a>
-	        </li>
-	    </ul>
-	</div>
+	<ng-include src="'../../view/_navigation.html'"></ng-include>
 
 	<div id="page-content-wrapper">
 		<div id="overlay"></div>
@@ -88,7 +23,6 @@
 		                        <th> LIITE FAV </th> 
 	                        </tr>
 	                        <tr ng-repeat="message in messages">
-	                        	{{ message }}
 	                        	<td> {{ message.create_time }} </td>
 	                        	<td> {{ message.message }} </td>
 	                        	<td> {{ message.from_user_id }} </td>
