@@ -20,7 +20,7 @@
             }
         })
         .constant("API", {
-            "URL": "http://localhost:3000", 
+            "URL": "http://demo.qlma.fi:3000", 
         });
 
     config.$inject = ['$routeProvider', '$locationProvider'];
@@ -34,7 +34,7 @@
                 controllerAs: 'login'
             })
 
-            .when('/messages', {
+            .when('/messaging', {
                 controller: 'MessagesController',
                 templateUrl: 'views/messages.view.html',
                 controllerAs: 'messages'
@@ -47,6 +47,7 @@
             })
 
             .otherwise({ redirectTo: '/' });
+            $locationProvider.html5Mode(true);
     }
 
     run.$inject = ['$rootScope', '$location', '$window', '$http', 'qlmaService'];

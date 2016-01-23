@@ -12,6 +12,8 @@
 
         var user = qlmaService.get();
 
+        var date = this;
+
         frontpage.doLogout = function(args) {
             $rootScope.$emit('doLogout', args);
         }
@@ -36,8 +38,17 @@
                 });
         }
 
-        frontpage.loadMessages();    
+        frontpage.getDate = function() {
+            console.log("Get date");
+            var currentDate = new Date();
+            date =  currentDate.getDate() + "." + currentDate.getMonth() + 1 + "." + currentDate.getFullYear();
+
+            $rootScope.date = date;
+        }
+
+        frontpage.loadMessages();
         frontpage.getProfile();
+        frontpage.getDate();
 
     }
 
