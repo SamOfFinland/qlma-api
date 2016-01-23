@@ -30,7 +30,7 @@
 
         login.doLogout = function () {
             delete $window.sessionStorage.token;
-            $location.path("/login")
+            $location.path("/")
         }
     }
 
