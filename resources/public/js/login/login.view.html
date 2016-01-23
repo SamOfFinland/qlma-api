@@ -3,9 +3,9 @@
     <div id="form-area" class="login-shadow" ng-controller="LoginController as login">
         <form name="loginForm" ng-submit="login.doLogin()" role="form">
             <span class="form-text">KÄYTTÄJÄTUNNUS</span><br>
-            <input ng-model="login.username" class="form-input" value="Matti Meikäläinen" type="text" />
+            <input id="username" ng-model="login.username" class="form-input" value="Matti Meikäläinen" type="text" />
             <span class="form-text">SALASANA</span><br>
-            <input ng-model="login.password" class="form-input" value="" type="password" />
+            <input id="password" ng-model="login.password" class="form-input" value="" type="password" />
             <input class="form-button" type="submit" value="KIRJAUDU">
         </form>
     </div>
