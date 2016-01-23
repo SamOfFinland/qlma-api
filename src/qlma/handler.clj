@@ -53,6 +53,10 @@
       (GET "/" request
         (let [my-id (-> request :identity :id)]
           (authorized-page request {:message (messages/get-message (read-string id) my-id)})))))
+  (context "/profile" []
+    (GET "/" request
+        (let [info (-> request :identity)]
+          (authorized-page request {:message info}))))
   (route/resources "/")
   (route/not-found "Not Found"))
 
