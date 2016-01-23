@@ -18,7 +18,8 @@
   :plugins [
             [lein-ring "0.8.13"]
             [lein-environ "1.0.1"]]
-  :ring {:handler qlma.handler/app}
+  :ring {:handler qlma.handler/app
+         :init    utils.database.migrations/migrate}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring-mock "0.1.5"]]}})
