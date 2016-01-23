@@ -17,7 +17,6 @@
                 'Authorization': 'Token ' + $window.sessionStorage.token,
                 }
             };
-            console.log(messages)
 
             var subject = messages.subject;
             var recipient = messages.recipient;

@@ -20,14 +20,14 @@
             }
         })
         .constant("API", {
-            "URL": "http://demo.qlma.fi:3000", 
+            "URL": "http://localhost:3000",
         });
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         console.log("Config");
         $routeProvider
-           
+
             .when('/', {
                 controller: 'LoginController',
                 templateUrl: 'views/login.view.html',
@@ -46,6 +46,12 @@
                 controllerAs: 'frontpage'
             })
 
+            .when('/profile', {
+                controller: 'ProfileController',
+                templateUrl: 'views/profile.view.html',
+                controllerAs: 'profile'
+            })
+
             .otherwise({ redirectTo: '/' });
             $locationProvider.html5Mode(true);
     }
@@ -56,7 +62,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
 
-        });       
+        });
     }
 
 })();
