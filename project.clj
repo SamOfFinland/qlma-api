@@ -16,7 +16,7 @@
                  [ring/ring-defaults "0.1.5"]
                  [ring-cors "0.1.7"]]
   :plugins [
-            [lein-ring "0.8.13"]
+            [lein-ring "0.9.7"]
             [lein-environ "1.0.1"]]
   :ring {:handler qlma.handler/app
          :init    utils.database.migrations/migrate}
