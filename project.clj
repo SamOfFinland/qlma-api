@@ -14,9 +14,10 @@
                  [ring/ring-json "0.4.0"]
                  [environ "1.0.1"]
                  [ring/ring-defaults "0.1.5"]
-                 [ring-cors "0.1.7"]]
+                 [ring-cors "0.1.7"]
+                 [ring/ring-jetty-adapter "1.4.0"]]
   :plugins [
-            [lein-ring "0.8.13"]
+            [lein-ring "0.9.7"]
             [lein-environ "1.0.1"]]
   :ring {:handler qlma.handler/app
          :init    utils.database.migrations/migrate}

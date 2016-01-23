@@ -1,8 +1,12 @@
 (ns qlma.db.messages
   (:require [qlma.db.core :refer :all]
-            [yesql.core :refer [defqueries]]))
+            [yesql.core :refer [defqueries]]
+            [clj-time.format :as f]
+            [clj-time.coerce :as c]))
 
 (defqueries "queries/messages.sql")
+
+(def finnish-time-format (f/formatter "dd.MM.yyyy hh:mm:ss"))
 
 (defn get-all-messages []
   (select-all-messages db-spec))
@@ -11,7 +15,13 @@
   (select-message-with-id db-spec id my-id))
 
 (defn get-messages-to-user [user_id]
-  (select-messages-to-user db-spec user_id))
+  (let [messages (select-messages-to-user db-spec user_id)
+        parse-fn (comp (partial f/unparse finnish-time-format) c/from-sql-date)]
+  (map
+   #(-> %
+        (update :create_time parse-fn)
+        (update :edit_time parse-fn))
+   messages)))
 
 (defn send-message
   ([from to message]
