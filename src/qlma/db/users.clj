@@ -6,7 +6,6 @@
 (defqueries "queries/users.sql")
 
 (defn get-all-users []
-  "Get all users from DB"
   (select-all-users db-spec))
 
 (defn create-user

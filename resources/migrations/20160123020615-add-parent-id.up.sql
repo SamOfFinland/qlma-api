@@ -1,1 +1,1 @@
-ALTER TABLE messages ADD COLUMN parent_id serial REFERENCES messages (id);
+ALTER TABLE messages ADD COLUMN parent_id integer REFERENCES messages (id);

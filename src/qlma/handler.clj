@@ -47,8 +47,9 @@
     (POST "/" request
       (let [my-id (-> request :identity :id)
             to (get-in request [:body :to])
-            message (get-in request [:body :message])]
-        (authorized-page request {:messages (messages/send-message my-id to message)})))
+            message (get-in request [:body :message])
+            parent_id (get-in request [:body :parent_id])]
+        (authorized-page request {:messages (messages/send-message my-id to message parent_id)})))
     (context "/:id" [id]
       (GET "/" request
         (let [my-id (-> request :identity :id)]
