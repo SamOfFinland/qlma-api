@@ -10,3 +10,8 @@
 
 (defn migrate []
   (migratus/migrate (config)))
+
+(defn create [name]
+  {:pre [(string? name)]}
+  (when name
+    (migratus/create (config) name)))
