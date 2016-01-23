@@ -1,43 +1,43 @@
 (function () {
     'use strict';
- 
-    var myApp = angular.module('app');
-    myApp
-    .constant("API", {
-        "URL": "http://localhost:3002", 
-    })
-    .controller('LoginController', function($scope, $http, $window, API) {
+     
+
+    function LoginController($rootScope, $location, $http, $window, API, qlmaService) {
         var login = this;
-    
+        
+        $rootScope.$on('doLogout', function(event, args) {
+            login.doLogout();
+        });
+        
+
         login.doLogin = function () {
             var username = login.username;
             var password = login.password;
             var credentials = {"username": username, "password": password};
-            console.log("Do Login");
-            console.log(API.URL + "/login");
-            console.log(credentials);
+
             $http.post(API.URL + '/login', credentials)
                 .success(function (data, status, headers, config) {
                     $window.sessionStorage.token = data.token;
-                    console.log("success");
-                    console.log(data.token);
-                    console.log(data);
-                    console.log(status);
-                    console.log(headers);
-                    console.log(config);
-            })
-            .error(function (data, status, headers, config) {
-                console.log(data);
-                console.log(status);
-                console.log(headers);
-                console.log(config);
-                // Erase the token if the user fails to log in
-                delete $window.sessionStorage.token;
+                    $location.path("/frontpage")
 
-                // Handle login errors here
-                console.log("failed");
-            });
+                })
+                .error(function (data, status, headers, config) {
+                    // Erase the token if the user fails to log in
+                    delete $window.sessionStorage.token;
+                });
 
         };
-    });
+
+        login.doLogout = function () {
+            delete $window.sessionStorage.token;
+            $location.path("/login")
+        }
+    }
+
+    var myApp = angular.module('app');
+    myApp
+        .controller("LoginController", LoginController);
+
+    LoginController.$inject = ['$rootScope', '$location', '$http', '$window', 'API', 'qlmaService'];
+
 })();

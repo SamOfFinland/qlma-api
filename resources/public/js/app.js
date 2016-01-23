@@ -30,13 +30,19 @@
            
             .when('/', {
                 controller: 'LoginController',
-                templateUrl: 'js/login/login.view.html',
+                templateUrl: 'views/login.view.html',
                 controllerAs: 'login'
+            })
+
+            .when('/messages', {
+                controller: 'MessagesController',
+                templateUrl: 'views/messages.view.html',
+                controllerAs: 'messages'
             })
 
             .when('/frontpage', {
                 controller: 'FrontPageController',
-                templateUrl: 'js/frontpage/frontpage.view.html',
+                templateUrl: 'views/frontpage.view.html',
                 controllerAs: 'frontpage'
             })
 
