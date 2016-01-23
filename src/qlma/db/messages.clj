@@ -14,5 +14,7 @@
   (select-messages-to-user db-spec user_id))
 
 (defn send-message
-  [from to message]
-  (insert-new-message<! db-spec from to message))
+  ([from to message]
+   (send-message from to message nil))
+  ([from to message parent_id]
+   (insert-new-message<! db-spec from to message parent_id)))
