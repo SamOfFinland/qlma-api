@@ -6,5 +6,8 @@ addons:
 before_script:
       - psql -c "create role qlma with login password '' createdb;" -U postgres
       - psql -c "create database qlma;" -U postgres
+      - git submodule update --recursive
+      - mkdir ./resources/public/
+      - cp -R ./src/client/public/* ./resouces/public/
 notifications:
       slack: qlma:06eKEWnITmDIHWgEyvlqqfIq
