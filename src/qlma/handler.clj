@@ -39,28 +39,28 @@
 
 (defroutes app-routes
   (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
-  (context "/api" []
-    (POST "/login" [] login)
-    (context "/messages" []
-      (GET "/" request
-        (let [my-id (-> request :identity :id)]
-          (authorized-page request {:messages (messages/get-messages-to-user my-id)})))
-      (POST "/" request
-        (let [my-id (-> request :identity :id)
-              to (get-in request [:body :to])
-              message (get-in request [:body :message])
-              parent_id (get-in request [:body :parent_id])]
-          (authorized-page request {:messages (messages/send-message my-id to message parent_id)})))
-      (context "/:id" [id]
+    (context "/api" []
+      (POST "/login" [] login)
+      (context "/messages" []
         (GET "/" request
           (let [my-id (-> request :identity :id)]
-            (authorized-page request {:message (messages/get-message (read-string id) my-id)})))))
-    (context "/profile" []
-      (GET "/" request
-          (let [info (-> request :identity)]
-            (authorized-page request {:message info}))))
-    (route/resources "/")
-    (route/not-found "Not Found")))
+            (authorized-page request {:messages (messages/get-messages-to-user my-id)})))
+        (POST "/" request
+          (let [my-id (-> request :identity :id)
+                to (get-in request [:body :to])
+                message (get-in request [:body :message])
+                parent_id (get-in request [:body :parent_id])]
+            (authorized-page request {:messages (messages/send-message my-id to message parent_id)})))
+        (context "/:id" [id]
+          (GET "/" request
+            (let [my-id (-> request :identity :id)]
+              (authorized-page request {:message (messages/get-message (read-string id) my-id)})))))
+      (context "/profile" []
+        (GET "/" request
+            (let [info (-> request :identity)]
+              (authorized-page request {:message info})))))
+      (route/resources "/")
+      (route/not-found "Not Found"))
 
 (def auth-backend (jws-backend {:secret secret :options {:alg :hs512}}))
 
