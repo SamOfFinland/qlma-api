@@ -11,7 +11,7 @@ before_script:
       - gulp build-prod
       - cd $TRAVIS_BUILD_DIR
       - mkdir ./resources/public/
-      - cp -R ./src/client/public/* ./resouces/public/
+      - cp -R ./src/client/public/* ./resources/public/
       - psql -c "create role qlma with login password '' createdb;" -U postgres
       - psql -c "create database qlma;" -U postgres
 notifications:
