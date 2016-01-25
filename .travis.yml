@@ -3,10 +3,14 @@ jdk:
   - oraclejdk8
 addons:
       postgresql: "9.3"
+install:
+	 - npm install
+	 - npm install -g gulp
+	 - npm install -g gulp-util
 before_script:
       - psql -c "create role qlma with login password '' createdb;" -U postgres
       - psql -c "create database qlma;" -U postgres
-      - git submodule update --recursive
+      - gulp build-prod
       - mkdir ./resources/public/
       - cp -R ./src/client/public/* ./resouces/public/
 notifications:
