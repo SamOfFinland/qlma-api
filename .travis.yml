@@ -5,8 +5,8 @@ addons:
       postgresql: "9.3"
 install: 
       - cd ./src/client/ && npm install
-      - cd ./src/client/ && npm install -g gulp
-      - cd ./src/client/ && npm install -g gulp-util
+      - npm install -g gulp
+      - npm install -g gulp-util
 before_script:
       - cd $TRAVIS_BUILD_DIR
       - psql -c "create role qlma with login password '' createdb;" -U postgres
