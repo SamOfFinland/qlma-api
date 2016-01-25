@@ -39,8 +39,8 @@
 
 (defroutes app-routes
   (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
-  (POST "/login" [] login)
-  (context "/messages" []
+  (POST "/api/login" [] login)
+  (context "/api/messages" []
     (GET "/" request
       (let [my-id (-> request :identity :id)]
         (authorized-page request {:messages (messages/get-messages-to-user my-id)})))
@@ -54,7 +54,7 @@
       (GET "/" request
         (let [my-id (-> request :identity :id)]
           (authorized-page request {:message (messages/get-message (read-string id) my-id)})))))
-  (context "/profile" []
+  (context "/api/profile" []
     (GET "/" request
         (let [info (-> request :identity)]
           (authorized-page request {:message info}))))
