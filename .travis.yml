@@ -4,9 +4,9 @@ jdk:
 addons:
       postgresql: "9.3"
 install:
-	 - npm install
-	 - npm install -g gulp
-	 - npm install -g gulp-util
+	  - npm install
+	  - npm install -g gulp
+	  - npm install -g gulp-util
 before_script:
       - psql -c "create role qlma with login password '' createdb;" -U postgres
       - psql -c "create database qlma;" -U postgres
