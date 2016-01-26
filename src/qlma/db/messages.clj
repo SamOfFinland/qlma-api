@@ -6,7 +6,7 @@
 
 (defqueries "queries/messages.sql")
 
-(def finnish-time-format (f/formatter "dd.MM.yyyy hh:mm:ss"))
+(def finnish-time-format (f/formatter "dd.MM.yyyy HH:mm:ss"))
 
 (defn get-all-messages []
   (select-all-messages db-spec))

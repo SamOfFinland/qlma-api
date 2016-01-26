@@ -39,6 +39,8 @@
 
 (defroutes app-routes
   (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
+  (GET "/:page" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
+
     (context "/api" []
       (POST "/login" [] login)
       (context "/messages" []
