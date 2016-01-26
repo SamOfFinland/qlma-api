@@ -12,5 +12,9 @@
       (is (.contains (str (:body response)) "index.html"))))
 
   (testing "not-found route"
-    (let [response (app (mock/request :get "/invalid"))]
-      (is (= (:status response) 404)))))
+    (let [response (app (mock/request :get "/api/invalid"))]
+      (is (= (:status response) 404))))
+
+  (testing "messages route"
+    (let [response (app (mock/request :get "/messages"))]
+      (is (= (:status response) 200)))))
