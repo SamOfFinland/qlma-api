@@ -20,7 +20,6 @@
 (def auth-backend (jws-backend {:secret secret
                                 :options {:alg :hs512}}))
 
-
 (defn login [request]
   (let [username (get-in request [:body :username])
         password (get-in request [:body :password])
@@ -62,35 +61,35 @@
   (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
   (GET "/:page" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
 
-    (context "/api" []
-      (POST "/login" [] login)
-      (context "/messages" []
+  (context "/api" []
+    (POST "/login" [] login)
+    (context "/messages" []
+      (GET "/" request
+        (let [my-id (-> request :identity :id)]
+          (resp/response {:messages (messages/get-messages-to-user my-id)})))
+      (POST "/" request
+        (let [my-id (-> request :identity :id)
+              to (get-in request [:body :to])
+              message (get-in request [:body :message])
+              parent_id (get-in request [:body :parent_id])]
+          (resp/response {:messages (messages/send-message my-id to message parent_id)})))
+      (context "/:id" [id]
         (GET "/" request
           (let [my-id (-> request :identity :id)]
-            (resp/response {:messages (messages/get-messages-to-user my-id)})))
-        (POST "/" request
-          (let [my-id (-> request :identity :id)
-                to (get-in request [:body :to])
-                message (get-in request [:body :message])
-                parent_id (get-in request [:body :parent_id])]
-            (resp/response {:messages (messages/send-message my-id to message parent_id)})))
-        (context "/:id" [id]
-          (GET "/" request
-            (let [my-id (-> request :identity :id)]
-              (resp/response {:message (messages/get-message (read-string id) my-id)})))))
-      (context "/profile" []
-        (GET "/" request
-            (let [info (-> request :identity)]
-              (resp/response {:message info})))))
-      (route/resources "/")
-      (route/not-found "Not Found"))
+            (resp/response {:message (messages/get-message (read-string id) my-id)})))))
+    (context "/profile" []
+      (GET "/" request
+        (let [info (-> request :identity)]
+          (resp/response {:message info})))))
+  (route/resources "/")
+  (route/not-found "Not Found"))
 
 (def app
   (->
-      app-routes
-      (acl/wrap-access-rules {:rules rules
-                              :on-error on-error})
-      (wrap-authentication auth-backend)
-      (wrap-defaults api-defaults)
-      (middleware/wrap-json-body {:keywords? true})
-      (middleware/wrap-json-response)))
+   app-routes
+   (acl/wrap-access-rules {:rules rules
+                           :on-error on-error})
+   (wrap-authentication auth-backend)
+   (wrap-defaults api-defaults)
+   (middleware/wrap-json-body {:keywords? true})
+   (middleware/wrap-json-response)))

@@ -17,11 +17,11 @@
 (defn get-messages-to-user [user_id]
   (let [messages (select-messages-to-user db-spec user_id)
         parse-fn (comp (partial f/unparse finnish-time-format) c/from-sql-date)]
-  (map
-   #(-> %
-        (update :create_time parse-fn)
-        (update :edit_time parse-fn))
-   messages)))
+    (map
+     #(-> %
+          (update :create_time parse-fn)
+          (update :edit_time parse-fn))
+     messages)))
 
 (defn send-message
   ([from to message]
