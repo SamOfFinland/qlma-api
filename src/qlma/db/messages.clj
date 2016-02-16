@@ -20,6 +20,15 @@
           (update :edit_time parse-fn))
      messages)))
 
+(defn get-replies [id my-id]
+  (let [messages (select-replies-to-message db-spec id my-id)
+        parse-fn (comp (partial f/unparse finnish-time-format) c/from-sql-date)]
+    (map
+     #(-> %
+          (update :create_time parse-fn)
+          (update :edit_time parse-fn))
+     messages)))
+
 (defn get-messages-to-user [user_id]
   (let [messages (select-messages-to-user db-spec user_id)
         parse-fn (comp (partial f/unparse finnish-time-format) c/from-sql-date)]
