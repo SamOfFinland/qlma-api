@@ -14,6 +14,9 @@
 (def second-user-id
   (atom 0))
 
+(def message-id
+  (atom 0))
+
 (deftest test-add-message
   (testing "Check if database is clean"
     (is (= 0 (count (messages/get-all-messages)))))
@@ -36,7 +39,20 @@
     (is (= 1 (count (messages/get-messages-to-user @second-user-id)))))
 
   (testing "Check if database has only one message"
-    (is (= 1 (count (messages/get-all-messages))))))
+    (is (= 1 (count (messages/get-all-messages)))))
+
+
+  (testing "Add another message from first user to second"
+    (is (reset! message-id (:id (messages/send-message @first-user-id @second-user-id "Hello world")))))
+
+  (testing "Add a reply to the message"
+    (is (= 7 (count (messages/send-message @second-user-id @first-user-id "Hello universe!" @message-id)))))
+
+  (testing "Check if message has reply"
+    (is (= 1 (count (messages/get-replies @message-id @first-user-id)))))
+
+
+)
 
 (defn- clean-database []
   (delete-all-messages! db-spec)
