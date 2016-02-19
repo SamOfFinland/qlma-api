@@ -86,11 +86,7 @@
     (ANY "*" [] ("Not found")))
 
 
-  (GET "/js/*" request (resp/content-type (resp/resource-response (request :uri) {:root "public"}) "text/js"))
-  (GET "/css/*" request (resp/content-type (resp/resource-response (request :uri) {:root "public"}) "text/css"))
-  (GET "/views/*" request (resp/content-type (resp/resource-response (request :uri) {:root "public"}) "text/html"))
-  (GET "/img/*" request (resp/content-type (resp/resource-response (request :uri) {:root "public"}) "image/png"))
-  (GET "/fonts/*" request (resp/content-type (resp/resource-response (request :uri) {:root "public"}) "application/octet-stream"))
+  (GET "/*" request (resp/resource-response (request :uri) {:root "public"}))
 
   (GET "/*" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html")))
 
