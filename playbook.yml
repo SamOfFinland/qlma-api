@@ -2,7 +2,7 @@
 # https://yobriefca.se/blog/2015/05/20/provisioning-postgres-via-vagrant-and-ansible/
 
 - hosts: all
-  sudo: yes
+  become: yes
   gather_facts: no
   tasks:
 
@@ -27,8 +27,8 @@
           - postgresql-9.4
 
 - hosts: all
-  sudo: yes
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   gather_facts: no
 
   handlers:
@@ -51,8 +51,8 @@
       notify: restart postgresql
 
 - hosts: all
-  sudo: yes
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   gather_facts: no
 
   vars:
