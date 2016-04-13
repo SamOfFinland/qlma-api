@@ -12,4 +12,4 @@ SELECT * FROM messages WHERE to_user_id = :user_id
 
 -- name: insert-new-message<!
 -- Create new message to user
-INSERT INTO messages (from_user_id, to_user_id, message, parent_id) values(:from, :to, :message, :parent_id)
+INSERT INTO messages (from_user_id, to_user_id, message, subject, parent_id) values(:from, :to, :message, :subject, :parent_id)

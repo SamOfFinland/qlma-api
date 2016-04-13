@@ -71,8 +71,9 @@
         (let [my-id (-> request :identity :id)
               to (get-in request [:body :to])
               message (get-in request [:body :message])
+              subject (get-in request [:body :subject])
               parent_id (get-in request [:body :parent_id])]
-          (resp/response {:messages (messages/send-message my-id to message parent_id)})))
+          (resp/response {:messages (messages/send-message my-id to message subject parent_id)})))
       (context "/:id" [id]
         (GET "/" request
           (let [my-id (-> request :identity :id)]

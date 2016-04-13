@@ -24,7 +24,7 @@
      messages)))
 
 (defn send-message
-  ([from to message]
-   (send-message from to message nil))
-  ([from to message parent_id]
-   (insert-new-message<! db-spec from to message parent_id)))
+  ([from to message subject]
+   (send-message from to message subject nil))
+  ([from to message subject parent_id]
+   (insert-new-message<! db-spec from to message subject parent_id)))
