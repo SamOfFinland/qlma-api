@@ -58,8 +58,6 @@
              :handler any-user}])
 
 (defroutes app-routes
-  (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
-  (GET "/:page" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
 
   (context "/api" []
     (POST "/login" [] login)
@@ -77,13 +75,22 @@
       (context "/:id" [id]
         (GET "/" request
           (let [my-id (-> request :identity :id)]
-            (resp/response {:message (messages/get-message (read-string id) my-id)})))))
+            (resp/response {:message (messages/get-message (read-string id) my-id)})))
+        (GET "/replies" request
+          (let [my-id (-> request :identity :id)]
+            (resp/response {:message (messages/get-replies (read-string id) my-id)})))))
+
     (context "/profile" []
       (GET "/" request
         (let [info (-> request :identity)]
-          (resp/response {:message info})))))
-  (route/resources "/")
-  (route/not-found "Not Found"))
+          (resp/response {:message info}))))
+    (ANY "*" [] ("Not found")))
+
+
+  (GET "/*" request (resp/resource-response (request :uri) {:root "public"}))
+
+  (GET "/*" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html")))
+
 
 (def app
   (->

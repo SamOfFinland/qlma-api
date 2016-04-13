@@ -1,5 +1,9 @@
 # Created by https://www.gitignore.io/api/vagrant,vim,osx,clojure,intellij
 
+# folder for client repo
+/resources/public
+
+
 ### Vagrant ###
 .vagrant/
 
@@ -19,7 +23,8 @@ Session.vim
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
