@@ -30,5 +30,6 @@
         :subprotocol "postgresql",
         :subname "//localhost:5432/qlma",
         :user "qlma"
+        :password "qlma"
         :secret-key "NOT IN PRODUCTION!"}
        (get-settings-from-file)))))
