@@ -43,10 +43,10 @@
 
 
   (testing "Add another message from first user to second"
-    (is (reset! message-id (:id (messages/send-message @first-user-id @second-user-id "Hello world")))))
+    (is (reset! message-id (:id (messages/send-message @first-user-id @second-user-id "Hello world" "Subject")))))
 
   (testing "Add a reply to the message"
-    (is (= 7 (count (messages/send-message @second-user-id @first-user-id "Hello universe!" @message-id)))))
+    (is (= 8 (count (messages/send-message @second-user-id @first-user-id "Hello universe!" "Subject" @message-id)))))
 
   (testing "Check if message has reply"
     (is (= 1 (count (messages/get-replies @message-id @first-user-id)))))
