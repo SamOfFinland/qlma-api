@@ -26,6 +26,7 @@
 
 (defn- clean-database []
   (delete-all-messages! db-spec)
+  (delete-all-tags! db-spec)
   (delete-all-users! db-spec))
 
 (use-fixtures :once
