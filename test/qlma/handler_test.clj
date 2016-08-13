@@ -16,5 +16,5 @@
       (is (= (:status response) 403))))
 
   (testing "messages route"
-    (let [response (app (mock/request :get "/messages"))]
-      (is (= (:status response) 200)))))
+    (let [response (app (mock/request :get "/api/messages"))]
+      (is (= (:status response) 403)))))
