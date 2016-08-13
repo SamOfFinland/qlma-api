@@ -58,6 +58,7 @@
              :handler any-user}])
 
 (defroutes app-routes
+  (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
 
   (context "/api" []
     (POST "/login" [] login)
@@ -85,11 +86,8 @@
         (let [info (-> request :identity)]
           (resp/response {:message info}))))
     (ANY "*" [] ("Not found")))
-
-
-  (GET "/*" request (resp/resource-response (request :uri) {:root "public"}))
-
-  (GET "/*" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html")))
+  (route/resources "/")
+  (route/not-found "Page not found"))
 
 
 (def app

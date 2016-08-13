@@ -2,13 +2,8 @@
   :description "FIXME: write description"
   :url "http://www.qlma.fi"
 
-  :source-paths ["src/clj" "src/cljc"]
-  :resource-paths ["resources" "target/cljsbuild"]
-
-  :clean-targets ^{:protect false}
-  [:target-path
-   [:cljsbuild :builds :app :compiler :output-dir]
-   [:cljsbuild :builds :app :compiler :output-to]]
+  :source-paths ["src/clj"]
+  :resource-paths ["resources"]
 
   :min-lein-version "2.0.0"
   :dependencies [
@@ -33,23 +28,23 @@
   :plugins [
             [lein-ring "0.9.7"]
             [lein-environ "1.0.1"]
-            [lein-cljsbuild "1.1.3"]]
+            [lein-cljsbuild "1.1.3"]
+            [lein-figwheel "0.5.4-7"]]
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
-                             :compiler {:output-to     "resources/public/js/app.js"
-                                        :output-dir    "resources/public/js/out"
-                                        :asset-path   "js/out"
+                             :figwheel true
+                             :compiler {:main "qlma.core"
+                                        :output-to    "resources/public/js/app.js"
+                                        :output-dir "resources/public/js/out"
+                                        :asset-path "js/out"
                                         :optimizations :none
-                                        :cache-analysis true
                                         :pretty-print  true}}}}
 
   :figwheel
   {:http-server-root "public"
-   :server-port 3449
-   :nrepl-port 7002
-   :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
+   :server-port 5309
    :css-dirs ["resources/public/css"]
-   :ring-handler myproject.handler/app}
+   :ring-handler qlma.handler/app}
 
   :ring {:handler qlma.handler/app
          :init    utils.database.migrations/migrate}
