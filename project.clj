@@ -8,7 +8,7 @@
   :min-lein-version "2.0.0"
   :dependencies [
                  [org.clojure/clojure "1.7.0"]
-                 [compojure "1.4.0"]
+                 [compojure "1.5.1"]
                  [yesql "0.4.2"]
                  [migratus "0.8.2"]
                  [hiccup "1.0.5"]
@@ -20,6 +20,10 @@
                  [ring/ring-defaults "0.1.5"]
                  [ring-cors "0.1.7"]
                  [ring/ring-jetty-adapter "1.4.0"]
+                 [metosin/compojure-api "1.1.8"]
+                 [metosin/ring-swagger "0.22.11"]
+                 [metosin/ring-swagger-ui "2.2.2-0"]
+                 [prismatic/schema "1.1.3"]
                  [org.clojure/clojurescript "1.8.51"
                   :scope "provided"]
                  [reagent "0.5.0-alpha3"]
