@@ -1,16 +1,15 @@
 (ns qlma.core
-  (:require-macros [cljs.core.async.macros :refer (go)]
-                   [secretary.core :refer [defroute]])
+  (:require-macros [cljs.core.async.macros :refer (go)])
   (:import goog.History)
   (:require [reagent.core :as r]
             [qlma.login :as login]
             [qlma.app :as app]
             [add_routing.core :as ad]
-            [cljs.core.async :refer  (chan put! <!)]))
+            [cljs.core.async :refer (chan put! <!)]))
 
 (defn home []
-      [:div [:h1 "Home Page"]
-       [:a {:href "#/login"} "login page"]])
+  [:div [:h1 "Home Page"]
+   [:a {:href "#/login"} "login page"]])
 
 (defn qlma []
   [:div [:h1 "QLMA LOGGED IN "]
@@ -18,15 +17,15 @@
 
 (defmulti current-page #(@app/app-state :page))
 (defmethod current-page :home []
-           [home])
+  [home])
 (defmethod current-page :qlma []
-           [qlma])
+  [qlma])
 (defmethod current-page :login []
-           (login/form (:schoolname @app/app-state)))
+  (login/form))
 (defmethod current-page :default []
-           [:div ])
+  [:div])
 
 (defn ^:export init []
-      (ad/app-routes)
-      (r/render [current-page]
-                      (.getElementById js/document "app")))
+  (ad/app-routes)
+  (r/render [current-page]
+            (.getElementById js/document "app")))

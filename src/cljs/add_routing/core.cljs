@@ -5,29 +5,27 @@
             [goog.events :as events]
             [goog.history.EventType :as EventType]
             [qlma.app :as app]
-            [cljs.core.async :refer  (chan put! <!)]))
+            [cljs.core.async :refer (chan put! <!)]))
 
 
 (defn hook-browser-navigation! []
-      (doto (History.)
-            (events/listen
-              EventType/NAVIGATE
-              (fn [event]
-                  (secretary/dispatch! (.-token event))))
-            (.setEnabled true)))
-
+  (doto (History.)
+    (events/listen
+      EventType/NAVIGATE
+      (fn [event]
+        (secretary/dispatch! (.-token event))))
+    (.setEnabled true)))
 
 (defn app-routes []
-      (secretary/set-config! :prefix "#")
+  (secretary/set-config! :prefix "#")
 
-      (defroute "/" []
-                (put! app/EVENTCHANNEL [:navigate :home]))
-                ;(swap! app/app-state assoc :page :home))
+  (defroute "/" []
+            (put! app/EVENTCHANNEL [:navigate :home]))
 
-      (defroute "/login" []
-                (put! app/EVENTCHANNEL [:navigate :login]))
+  (defroute "/login" []
+            (put! app/EVENTCHANNEL [:navigate :login]))
 
-      (defroute "/qlma" []
-                (put! app/EVENTCHANNEL [:navigate :qlma]))
+  (defroute "/qlma" []
+            (put! app/EVENTCHANNEL [:navigate :qlma]))
 
-      (hook-browser-navigation!))
+  (hook-browser-navigation!))
