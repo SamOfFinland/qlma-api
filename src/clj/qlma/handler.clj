@@ -92,7 +92,7 @@
       (GET "/" request
         (let [info (-> request :identity)]
           (resp/response {:message info}))))
-    (ANY "*" [] ("Not found")))
+    (ANY "*" [] "Not found"))
   (route/resources "/")
   (route/not-found "Page not found"))
 
