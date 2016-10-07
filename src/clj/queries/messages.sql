@@ -17,3 +17,7 @@ SELECT * FROM messages WHERE to_user_id = :user_id AND parent_id IS NULL
 -- name: insert-new-message<!
 -- Create new message to user
 INSERT INTO messages (from_user_id, to_user_id, message, subject, parent_id) values(:from, :to, :message, :subject, :parent_id)
+
+-- name: select-messages-from-user
+-- Select own sent messages
+SELECT * FROM messages WHERE from_user_id = :user_id
