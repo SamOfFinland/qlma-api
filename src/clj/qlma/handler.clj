@@ -20,6 +20,12 @@
 (def auth-backend (jws-backend {:secret secret
                                 :options {:alg :hs512}}))
 
+(def req-headers
+  { "Access-Control-Allow-Origin" "*"
+   "Access-Control-Allow-Headers" "Content-Type"
+   "Access-Control-Allow-Methods" "GET,POST,OPTIONS"
+   "Content-Type" "application/json; charset=utf-8" })
+
 (defn login [request]
   (let [username (get-in request [:body :username])
         password (get-in request [:body :password])
@@ -32,8 +38,10 @@
                                 user-data)
             token (jws/sign session-data secret {:alg :hs512})]
         {:status 200
+         :headers req-headers
          :body {:token token}})
       {:status 400
+       :headers req-headers
        :body {:message "Permission denied"}})))
 
 (defn any-user
@@ -49,13 +57,15 @@
 (defn on-error
   [request value]
   {:status 403
-   :headers  {}
+   :headers req-headers
    :body value})
 
 (def rules [{:pattern #"^/api/(?!login$).*"
              :handler logged-user}
             {:uri "/api/login"
              :handler any-user}])
+
+
 
 (defroutes app-routes
   (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))

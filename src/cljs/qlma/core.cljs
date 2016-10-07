@@ -1,22 +1,32 @@
 (ns qlma.core
-  (:require-macros [cljs.core.async.macros :refer (go)])
+  (:require-macros [cljs.core.async.macros :refer (go)]
+                   [secretary.core :refer [defroute]])
+  (:import goog.History)
   (:require [reagent.core :as r]
             [qlma.login :as login]
             [qlma.app :as app]
-            [clojure.string :as str]
+            [add_routing.core :as ad]
             [cljs.core.async :refer  (chan put! <!)]))
 
-(defn startpage [username]
-      [:div
-       [:p
-        {:on-click (fn [event] (put! app/EVENTCHANNEL [:update-username "kissa"]))}
-         (str "Welcome to qlma " username)]])
+(defn home []
+      [:div [:h1 "Home Page"]
+       [:a {:href "#/login"} "login page"]])
 
-(defn qlma-client []
-  (if-not (str/blank? (:token @app/app-state))
-    [startpage (:username @app/app-state)]
-    (login/form (:schoolname @app/app-state))))
+(defn qlma []
+  [:div [:h1 "QLMA LOGGED IN "]
+   [:a {:href "#/login"} "login page"]])
+
+(defmulti current-page #(@app/app-state :page))
+(defmethod current-page :home []
+           [home])
+(defmethod current-page :qlma []
+           [qlma])
+(defmethod current-page :login []
+           (login/form (:schoolname @app/app-state)))
+(defmethod current-page :default []
+           [:div ])
 
 (defn ^:export init []
-  (r/render [qlma-client]
-            (js/document.getElementById "app")))
+      (ad/app-routes)
+      (r/render [current-page]
+                      (.getElementById js/document "app")))
