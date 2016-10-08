@@ -20,9 +20,13 @@
                  [ring/ring-defaults "0.1.5"]
                  [ring-cors "0.1.7"]
                  [ring/ring-jetty-adapter "1.4.0"]
+
+                 ; Metosin <3
                  [metosin/compojure-api "1.1.8"]
                  [metosin/ring-swagger "0.22.11"]
                  [metosin/ring-swagger-ui "2.2.2-0"]
+                 [metosin/ring-http-response "0.8.0"]
+
                  [prismatic/schema "1.1.3"]
                  [org.clojure/clojurescript "1.8.51"
                   :scope "provided"]
