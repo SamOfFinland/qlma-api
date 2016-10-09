@@ -89,20 +89,24 @@
                  (let [my-id (-> request :identity :id)]
                    (ok (messages/get-messages-to-user my-id))))
             (POST "/" request
+                  :summary "Send message"
                   :body-params [to :- (describe Integer "Message to")
                                 subject :- (describe String "Subject")
                                 message :- (describe String "Message")]
                   (let [my-id (-> request :identity :id)]
                     (ok (messages/send-message my-id to message subject))))
             (GET "/sent" request
+                  :summary "Get all sended mesages"
                  (let [my-id (-> request :identity :id)]
                    (ok (messages/get-messages-from-user my-id))))
             (context "/:message-id" []
                      :path-params [message-id :- (describe Integer "Get message with id")]
                      (GET "/" request
+                          :summary "Get message with ID"
                           (let [my-id (-> request :identity :id)]
                             (ok (messages/get-message message-id my-id))))
                      (GET "/replies" request
+                          :summary "Get reply messages"
                           (let [my-id (-> request :identity :id)]
                             (ok (messages/get-replies message-id my-id))))))
    (context "/profile" []
