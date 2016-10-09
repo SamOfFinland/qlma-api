@@ -1,5 +1,7 @@
 (ns qlma.handler
-  (:require [compojure.api.sweet :refer :all]
+  (:require [ring.util.http-response :refer :all]
+            [compojure.api.sweet :refer :all]
+            [compojure.route :as route]
             [ring.middleware.defaults :refer :all]
             [ring.middleware.json :as middleware]
             [schema.core :as s]
@@ -20,6 +22,12 @@
 (def auth-backend (jws-backend {:secret secret
                                 :options {:alg :hs512}}))
 
+(defn permission-denied
+  ([] (permission-denied "Permission denied"))
+  ([message]
+   (unauthorized message)))
+
+
 (defn login [user]
   (let [username (:username user)
         password (:password user)
@@ -31,10 +39,8 @@
                                  :exp (time/plus (time/now) (time/seconds 3600))}
                                 user-data)
             token (jws/sign session-data secret {:alg :hs512})]
-        {:status 200
-         :body {:token token}})
-      {:status 400
-       :body {:message "Permission denied"}})))
+        (ok {:token token}))
+      (permission-denied))))
 
 (defn any-user
   [req]
@@ -44,13 +50,8 @@
   [req]
   (if (authenticated? req)
     true
-    (acl/error {:message "Only authenticated users allowed"})))
+    (acl/error (permission-denied))))
 
-(defn on-error
-  [request value]
-  {:status 403
-   :headers  {}
-   :body value})
 
 (def rules [{:pattern #"^/api/(?!login$).*"
              :handler logged-user}
@@ -63,71 +64,62 @@
 
 (def app-routes
   (api
-    {:swagger
-     {:ui "/api-docs"
-      :spec "/swagger.json"
-      :data {:info {:title "Sample API"
-                    :description "Compojure Api example"}
-             :tags [{:name "api", :description "some apis"}]}}}
+   {:swagger
+    {:ui "/api-docs"
+     :spec "/swagger.json"
+     :data {:info {:title "Sample API"
+                   :description "Compojure Api example"}
+            :tags [{:name "api", :description "some apis"}]}}}
 
    (GET "/" []
         (resp/content-type
          (resp/resource-response "index.html" {:root "public"}) "text/html"))
    (context "/api" []
-      (POST "/login" []
-            :body [user NewLogin]
-            :summary "Login"
-            (login user))
-      (context "/messages" []
-        (GET "/" request
-             :header-params [authorization :- (describe String "Token")]
-             (let [my-id (-> request :identity :id)]
-                  (str my-id)))))))
-
-;(defroutes app-routes
-;  (GET "/" [] (resp/content-type (resp/resource-response "index.html" {:root "public"}) "text/html"))
-;
-;  (context "/api" []
-;    (POST "/login" [] login)
-;    (context "/messages" []
-;      (GET "/" request
-;        (let [my-id (-> request :identity :id)]
-;          (resp/response {:messages (messages/get-messages-to-user my-id)})))
-;      (POST "/" request
-;        (let [my-id (-> request :identity :id)
-;              to (get-in request [:body :to])
-;              message (get-in request [:body :message])
-;              subject (get-in request [:body :subject])
-;              parent_id (get-in request [:body :parent_id])]
-;          (resp/response {:messages (messages/send-message my-id to message subject parent_id)})))
-;      (context "/sent" []
-;        (GET "/" request
-;          (let [my-id (-> request :identity :id)]
-;            (resp/response {:messages (messages/get-messages-from-user my-id)})
-;          )
-;        )
-;      )
-;      (context "/:id" [id]
-;        (GET "/" request
-;          (let [my-id (-> request :identity :id)]
-;            (resp/response {:message (messages/get-message (read-string id) my-id)})))
-;        (GET "/replies" request
-;          (let [my-id (-> request :identity :id)]
-;            (resp/response {:message (messages/get-replies (read-string id) my-id)})))))
-;
-;    (context "/profile" []
-;      (GET "/" request
-;        (let [info (-> request :identity)]
-;          (resp/response {:message info}))))
-;    (ANY "*" [] "Not found"))
-;  (route/resources "/")
-;  (route/not-found "Page not found"))
+            :responses {401 {:description "Permission denied"}}
+            (POST "/login" []
+                  :body [user NewLogin]
+                  :summary "Login"
+                  (login user)))
+   (context "/messages" []
+            :tags ["Messages"]
+            :responses {401 {:description "Permission denied"}}
+            :header-params [authorization :- (describe String "Token")]
+            (GET "/" request
+                 :summary "Get all messages for logged user"
+                 (let [my-id (-> request :identity :id)]
+                   (ok (messages/get-messages-to-user my-id))))
+            (POST "/" request
+                  :body-params [to :- (describe Integer "Message to")
+                                subject :- (describe String "Subject")
+                                message :- (describe String "Message")]
+                  (let [my-id (-> request :identity :id)]
+                    (ok (messages/send-message my-id to message subject))))
+            (GET "/sent" request
+                 (let [my-id (-> request :identity :id)]
+                   (ok (messages/get-messages-from-user my-id))))
+            (context "/:message-id" []
+                     :path-params [message-id :- (describe Integer "Get message with id")]
+                     (GET "/" request
+                          (let [my-id (-> request :identity :id)]
+                            (ok (messages/get-message message-id my-id))))
+                     (GET "/replies" request
+                          (let [my-id (-> request :identity :id)]
+                            (ok (messages/get-replies message-id my-id))))))
+   (context "/profile" []
+            :tags ["Profile"]
+            :responses {401 {:description "Permission denied"}}
+            :header-params [authorization :- (describe String "Token")]
+            (GET "/" request
+                 (let [info (-> request :indentity)]
+                   (ok info))))
+   (undocumented
+    (route/resources "/")
+    (route/not-found "404 Not found"))))
 
 
 (def app
   (->
    app-routes
-   (acl/wrap-access-rules {:rules rules
-                           :on-error on-error})
+   (acl/wrap-access-rules {:rules rules})
    (wrap-authentication auth-backend)
    (wrap-defaults api-defaults)))
