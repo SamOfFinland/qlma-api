@@ -74,12 +74,12 @@
    (GET "/" []
         (resp/content-type
          (resp/resource-response "index.html" {:root "public"}) "text/html"))
-   (context "/api" []
+   (context "/api/v1" []
             :responses {401 {:description "Permission denied"}}
             (POST "/login" []
                   :body [user NewLogin]
                   :summary "Login"
-                  (login user)))
+                  (login user))
    (context "/messages" []
             :tags ["Messages"]
             :responses {401 {:description "Permission denied"}}
@@ -118,7 +118,7 @@
                    (ok info))))
    (undocumented
     (route/resources "/")
-    (route/not-found "404 Not found"))))
+    (route/not-found "404 Not found")))))
 
 
 (def app
