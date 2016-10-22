@@ -63,9 +63,9 @@
    :headers req-headers
    :body value})
 
-(def rules [{:pattern #"^/api/(?!login$).*"
+(def rules [{:pattern #"^/api/v1/(?!login$).*"
              :handler logged-user}
-            {:uri "/api/login"
+            {:uri "/api/v1/login"
              :handler any-user}])
 
 (s/defschema NewLogin

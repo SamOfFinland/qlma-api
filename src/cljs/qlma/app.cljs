@@ -23,7 +23,7 @@
                       (let [[username password] data]
                         (js/console.log "username:" username)
                         (js/console.log "password:" password)
-                        (go (let [response (<! (http/post "http://localhost:5309/api/login" {:json-params {:username username :password password}}))]
+                        (go (let [response (<! (http/post "http://localhost:3000/api/v1/login" {:json-params {:username username :password password}}))]
                               (swap! app-state assoc :token (:token (:body response)))
                               (let [response (:status response)]
                                 (js/console.log "Got response: " response)
