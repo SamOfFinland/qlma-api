@@ -29,7 +29,7 @@
           (update :edit_time parse-fn))
      tags)))
 
-(defn get-global-tags [] 
+(defn get-global-tags []
   (let [tags (select-global-tags db-spec)
         parse-fn (comp (partial f/unparse finnish-time-format) c/from-sql-date)]
     (map

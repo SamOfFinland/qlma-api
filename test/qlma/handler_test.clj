@@ -13,8 +13,8 @@
 
   (testing "no permission route"
     (let [response (app (mock/request :get "/api/invalid"))]
-      (is (= (:status response) 403))))
+      (is (= (:status response) 401))))
 
   (testing "messages route"
-    (let [response (app (mock/request :get "/messages"))]
-      (is (= (:status response) 200)))))
+    (let [response (app (mock/request :get "/api/messages"))]
+      (is (= (:status response) 401)))))
