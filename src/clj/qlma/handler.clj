@@ -33,9 +33,9 @@
    "Access-Control-Allow-Methods" "GET,POST,OPTIONS"
    "Content-Type" "application/json; charset=utf-8" })
 
-(defn login [request]
-  (let [username (get-in request [:body :username])
-        password (get-in request [:body :password])
+(defn login [user]
+  (let [username (:username user)
+        password (:password user)
         valid? (user/valid-user? {:username username, :password password})]
     (if valid?
       (let [user-data (user/get-my-user-data {:password password
@@ -79,62 +79,61 @@
 
 (def app-routes
   (api
-   {:swagger
-    {:ui "/api-docs"
-     :spec "/swagger.json"
-     :data {:info {:title "Sample API"
-                   :description "Compojure Api example"}
-            :tags [{:name "api", :description "some apis"}]}}}
+    {:swagger
+      {:ui "/api-docs"
+       :spec "/swagger.json"
+       :data {:info {:title "Sample API"
+                     :description "Compojure Api example"}
+              :tags [{:name "api", :description "some apis"}]}}}
 
-   (GET "/" []
-        (resp/content-type
-         (resp/resource-response "index.html" {:root "public"}) "text/html"))
-   (context "/api/v1" []
-            :responses {401 {:description "Permission denied"}}
-            (POST "/login" []
-                  :body [user NewLogin]
-                  :summary "Login"
-                  (login user))
-     (context "/messages" []
-              :tags ["Messages"]
-              :responses {401 {:description "Permission denied"}}
-              :header-params [authorization :- (describe String "Token")]
-              (GET "/" request
-                   :summary "Get all messages for logged user"
-                   (let [my-id (-> request :identity :id)]
-                     (ok (messages/get-messages-to-user my-id))))
-              (POST "/" request
-                    :summary "Send message"
-                    :body-params [to :- (describe Integer "Message to")
-                                  subject :- (describe String "Subject")
-                                  message :- (describe String "Message")]
-                    (let [my-id (-> request :identity :id)]
-                      (ok (messages/send-message my-id to message subject))))
-              (GET "/sent" request
-                    :summary "Get all sended mesages"
-                   (let [my-id (-> request :identity :id)]
+    (GET "/" []
+      (resp/content-type
+        (resp/resource-response "index.html" {:root "public"}) "text/html"))
+    (context "/api/v1" []
+      :responses {401 {:description "Permission denied"}}
+      (POST "/login" []
+        :body [user NewLogin]
+        :summary "Login"
+        (login user))
+      (context "/messages" []
+               :tags ["Messages"]
+               :responses {401 {:description "Permission denied"}}
+               :header-params [authorization :- (describe String "Token")]
+        (GET "/" request
+          :summary "Get all messages for logged user"
+          (let [my-id (-> request :identity :id)]
+            (ok (messages/get-messages-to-user my-id))))
+        (POST "/" request
+          :summary "Send message"
+          :body-params [to :- (describe Integer "Message to")
+                        subject :- (describe String "Subject")
+                        message :- (describe String "Message")]
+          (let [my-id (-> request :identity :id)]
+            (ok (messages/send-message my-id to message subject))))
+        (GET "/sent" request
+          :summary "Get all sended mesages"
+          (let [my-id (-> request :identity :id)]
                      (ok (messages/get-messages-from-user my-id))))
-              (context "/:message-id" []
-                       :path-params [message-id :- (describe Integer "Get message with id")]
-                       (GET "/" request
-                            :summary "Get message with ID"
-                            (let [my-id (-> request :identity :id)]
-                              (ok (messages/get-message message-id my-id))))
-                       (GET "/replies" request
-                            :summary "Get reply messages"
-                            (let [my-id (-> request :identity :id)]
-                              (ok (messages/get-replies message-id my-id))))))
-     (context "/profile" []
-              :tags ["Profile"]
-              :responses {401 {:description "Permission denied"}}
-              :header-params [authorization :- (describe String "Token")]
-              (GET "/" request
-                   (let [info (-> request :indentity)]
-                     (ok info)))))
-   (undocumented
-    (route/resources "/")
-    (route/not-found "404 Not found"))))
-
+        (context "/:message-id" []
+          :path-params [message-id :- (describe Integer "Get message with id")]
+          (GET "/" request
+            :summary "Get message with ID"
+            (let [my-id (-> request :identity :id)]
+              (ok (messages/get-message message-id my-id))))
+          (GET "/replies" request
+            :summary "Get reply messages"
+            (let [my-id (-> request :identity :id)]
+              (ok (messages/get-replies message-id my-id))))))
+      (context "/profile" []
+        :tags ["Profile"]
+        :responses {401 {:description "Permission denied"}}
+        :header-params [authorization :- (describe String "Token")]
+        (GET "/" request
+          (let [info (-> request :indentity)]
+            (ok info)))))
+    (undocumented
+      (route/resources "/")
+      (route/not-found "404 Not found"))))
 
 (def app
   (->
