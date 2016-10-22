@@ -27,10 +27,15 @@
   ([message]
    (unauthorized message)))
 
+(def req-headers
+  { "Access-Control-Allow-Origin" "*"
+   "Access-Control-Allow-Headers" "Content-Type"
+   "Access-Control-Allow-Methods" "GET,POST,OPTIONS"
+   "Content-Type" "application/json; charset=utf-8" })
 
-(defn login [user]
-  (let [username (:username user)
-        password (:password user)
+(defn login [request]
+  (let [username (get-in request [:body :username])
+        password (get-in request [:body :password])
         valid? (user/valid-user? {:username username, :password password})]
     (if valid?
       (let [user-data (user/get-my-user-data {:password password
@@ -52,6 +57,11 @@
     true
     (acl/error (permission-denied))))
 
+(defn on-error
+  [request value]
+  {:status 403
+   :headers req-headers
+   :body value})
 
 (def rules [{:pattern #"^/api/(?!login$).*"
              :handler logged-user}
@@ -61,6 +71,11 @@
 (s/defschema NewLogin
   {:username s/Str
    :password s/Str})
+
+(defroutes app-routes
+  (GET "/" []
+    (resp/content-type
+      (resp/resource-response "index.html" {:root "public"}) "text/html")))
 
 (def app-routes
   (api
